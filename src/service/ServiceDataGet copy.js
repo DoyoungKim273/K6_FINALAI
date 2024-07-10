@@ -100,12 +100,12 @@ const ServiceDataGet = () => {
     if (value > 70) {
       return "#8884d8";
     } else if (value > 35) {
-       return "#b0a058";
+      return "#b0a058";
     } else {
       return "#82ca9d";
     }
   };
-  
+
   return (
     <div
       className={`bg-gradient-to-b from-slate-100 via-slate-50 to-slate-100 rounded-2xl ${
@@ -185,7 +185,14 @@ const ServiceDataGet = () => {
               <XAxis dataKey="hour" />
               <YAxis domain={[0, 130]} />
               <Tooltip />
-              <Bar dataKey="predicted_time" fill={graphColor(morningData)} />
+              <Bar dataKey="predicted_time">
+                {morningData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={graphColor(entry.predicted_time)}
+                  />
+                ))}
+              </Bar>
             </BarChart>
           </div>
 
@@ -202,7 +209,14 @@ const ServiceDataGet = () => {
               <XAxis dataKey="hour" />
               <YAxis domain={[0, 130]} />
               <Tooltip />
-              <Bar dataKey="predicted_time" fill={graphColor(afternoonData)} />
+              <Bar dataKey="predicted_time">
+                {afternoonData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={graphColor(entry.predicted_time)}
+                  />
+                ))}
+              </Bar>
             </BarChart>
           </div>
         </div>
