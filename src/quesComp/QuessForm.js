@@ -33,6 +33,8 @@ export default function QuessForm() {
         requestData
       );
       console.log("질문 제출 성공", response.data);
+      alert("질문 제출 성공");
+
     } catch (error) {
       console.error("질문 제출 실패", error);
       alert("질문 제출 실패");

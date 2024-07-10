@@ -18,7 +18,9 @@ import Login from "./member/Login";
 import SignUp from "./member/SignUp";
 import QnAPage from "./quesPage/QnAPage";
 import QuessForm from "./quesComp/QuessForm";
-import APICode from "./APICode"
+import ServicePage from "./service/ServicePage";
+import ServiceDataGet from "./service/ServiceDataGet";
+
 function App() {
   // 반응형 구현
   const isPcOrMobile = useMediaQuery({ query: "(max-width: 400px)" });
@@ -55,7 +57,8 @@ function App() {
             <Route path="/Login" element={<Login />} />
             <Route path="/QnAPage" element={<QnAPage />} />
             <Route path="/QuessForm" element={<QuessForm />} />
-            <Route path="/APICode" element={<APICode />} />
+            <Route path="/ServicePage" element={<ServicePage />} />
+            <Route path="/ServiceDataGet" element={<ServiceDataGet />} />
           </Routes>
         </div>
       </BrowserRouter>

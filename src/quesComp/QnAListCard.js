@@ -27,6 +27,7 @@ export default function QnAListCard() {
   return (
     // pc 모드에서는 2행으로 배치
     <div className={`my-2 flex flex-grow justify-center ${isPcOrMobile ? "flex-col" : ""}`}>
+      {/* 스크롤 안에서 한번 더 감싸기 */}
       <div className={` ${isPcOrMobile ? " overflow-y-auto h-[calc(100vh-200px)]" : "grid grid-cols-2 place-items-center gap-1"}`}>
       <div
         className={`bg-yellow-200 hover:bg-yellow-300 rounded-2xl ${isPcOrMobile ? "mx-3 my-2" : "w-11/12 h-11/12 m-2"}`}
