@@ -74,11 +74,13 @@ const ServiceDataGet = () => {
 
   // 시간별 예측 데이터를 가져오는 함수
   const fetchHourlyPredictions = async () => {
+    // 시간 예측 데이터를 저장할 빈 배열을 선언
     const predictions = [];
     for (let hour = 0; hour <= 24; hour++) {
       try {
         const response = await axios.post("http://localhost:5000/predict", {
-          ...formData,
+          ...formData, 
+          // 스프레드 연산자
           hour,
           ship_count: docksCount,
         });
@@ -88,7 +90,8 @@ const ServiceDataGet = () => {
         predictions.push({
           hour,
           predicted_time: roundedPredictedTime,
-        });
+        }); 
+        // 예측 데이터를 predictions 배열에 추가
         console.log(`시간 ${hour}에 대한 예측:`, roundedPredictedTime);
       } catch (error) {
         console.error(
@@ -96,21 +99,27 @@ const ServiceDataGet = () => {
           error
         );
         predictions.push({ hour, predicted_time: null });
+        // 오류가 발생한 데이터에 대해서는 predicted_time을 null로 설정하여 predictions 배열에 추가
       }
     }
     setHourlyPredictedTimes(predictions);
+    // 최종적으로 예측 데이터를 hourlyPredictedTime 상태로 저장 -> 컴포넌트에서 예측 데이터로 사용할 수 있게 함
   };
 
   // 날짜가 변경될 때마다 데이터를 가져옴
   useEffect(() => {
     fetchData(formData, setDocksCount);
-    // 함수 호출
+    // formData를 사용하여 데이터를 가져오고 부두의 개수를 설정
   }, [formData.year, formData.month, formData.day]);
+  // 배열 안 값이 변경될 때마다 fetchData 함수를 호출
 
+  // formData.hour이 존재하는지에 따라 filter 진행
   const filterData = formData.hour
     ? hourlyPredictedTimes.filter((data) => data.hour == formData.hour)
     : hourlyPredictedTimes;
+    // 존재하지 않는 경우 배열 전체를 반환
 
+  // 특정 시간에 대한 예측 시간 반환
   const getPredictedTimeHour = (hour) => {
     const result = hourlyPredictedTimes.find((data) => data.hour == hour);
     return result ? result.predicted_time : null;
@@ -272,6 +281,7 @@ const ServiceDataGet = () => {
             className={`flex flex-col items-center justify-center text-center bg-sky-800 text-slate-50 rounded-lg
               ${isPcOrMobile ? "ml-10 text-sm p-2" : "ml-14 mb-1 p-1"}`}
           >
+            {/* 예측된 시간 배열의 길이가 0보다 긴가 ? ( 모바일인가 ? (예상입출문~1) : (예상입출문2)) : (모바일인가 ? (예측한다~1) : (예측한다~2) */}
             {hourlyPredictedTimes.length > 0 ? ( isPcOrMobile ? (<p>
                 " {formData.hour} "시의 예상 입출문 소요시간은 <br/>
                 {getPredictedTimeHour(formData.hour)} " 분입니다.
@@ -334,6 +344,7 @@ const ServiceDataGet = () => {
                 <YAxis domain={[0, 130]} />
                 <Tooltip />
                 <Bar dataKey="predicted_time">
+                  {/* 그냥 변수명을 entry로 한 것이고 value 등 다른 값을 넣어도 상관 없음 */}
                   {afternoonData.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
