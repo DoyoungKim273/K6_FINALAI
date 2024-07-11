@@ -152,7 +152,15 @@ export default function SignUp() {
                 <input
                   type="number"
                   value={carNumA}
-                  onChange={(e) => setCarNumA(e.target.value)}
+                  // 음수 입력 방지
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value <= 0) {
+                      alert("유효한 숫자를 입력해주세요.");
+                    } else {
+                      setCarNumA(value);
+                    }
+                  }}
                   placeholder="앞번호"
                   className={`rounded-md p-2 mr-2 ${
                     isPcOrMobile ? "w-16" : "w-20"
@@ -161,7 +169,14 @@ export default function SignUp() {
                 />
                 <select
                   value={carMiddleChar}
-                  onChange={(e) => setCarMiddleChar(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value <= 0) {
+                      alert("유효한 숫자를 입력해주세요.");
+                    } else {
+                      setCarNumB(value);
+                    }
+                  }}
                   className={`rounded-md p-2 text-slate-400 w-16`}
                   required
                 >

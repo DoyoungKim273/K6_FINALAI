@@ -64,5 +64,3 @@ export const fetchData = async (formData, setDocksCount) => {
     console.error("데이터를 가져오거나 분석하는 중 오류 발생:", error);
   }
 };
-
-

@@ -17,7 +17,7 @@ export default function PortLuckMain() {
         <div className="bg-gradient-to-b from-slate-800 via-slate-700 to-slate-800 opacity-70 flex-grow mt-6 items-center justify-center flex flex-col">
           {/*  flex-grow를 추가하여 해당 div 요소가 부모 요소의 남는 공간을 채우도록 설정 */}
           <Link to="/ServicePage" className="bg-white p-5 rounded-3xl font-bold text-2xl opacity-100 hover:bg-sky-200">
-            입문 대기 시간 조회
+            입출문 소요 시간 조회
           </Link>
           <div
             className={`mt-5 font-medium text-white opacity-100 ${
@@ -31,7 +31,7 @@ export default function PortLuckMain() {
               isPcOrMobile ? "text-xs" : "text-xl"
             }`}
           >
-            ' 최적의 입문 시간 ' 을 추천해드립니다.
+            ' 입출문 소요 예상 시간 ' 을 예측해드립니다.
           </div>
         </div>
         <div>

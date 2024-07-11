@@ -28,6 +28,11 @@
   color: #61dafb;
 }
 
+.react-datepicker__day--outside-month {
+  color: #a8a8a8 !important;
+  pointer-events: none;
+} 
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

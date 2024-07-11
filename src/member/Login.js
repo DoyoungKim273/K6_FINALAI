@@ -45,8 +45,6 @@ export default function Login() {
       // 토큰이 존재하면 로컬 스토리지에 저장하고 성공 메시지 출력
       if (token) {
         localStorage.setItem("jwt", token);
-        // 다른 페이지에서 username이 넘어가기 위해 localStorage에 저장
-        localStorage.setItem("username", usernameValue);
         console.log("jwt 토큰", token);
         setUsername(usernameValue);
         console.log("context로 전달될 username", usernameValue);
@@ -111,8 +109,14 @@ export default function Login() {
                 <input
                   type="number"
                   value={carNumA}
-                  onChange={(e) => setCarNumA(e.target.value)}
-                  placeholder="앞번호"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value <= 0) {
+                      alert("유효한 숫자를 입력해주세요.");
+                    } else {
+                      setCarNumA(value);
+                    }
+                  }}                  placeholder="앞번호"
                   className={`rounded-md p-2 mr-2 ${
                     isPcOrMobile ? "w-16" : "w-20"
                   }`}
@@ -136,8 +140,13 @@ export default function Login() {
                 <input
                   type="number"
                   value={carNumB}
-                  onChange={(e) => setCarNumB(e.target.value)}
-                  placeholder="뒷번호"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value <= 0) {
+                    } else {
+                      setCarNumB(value);
+                    }
+                  }}                  placeholder="뒷번호"
                   className={`rounded-md p-2 ml-2 ${
                     isPcOrMobile ? "w-16" : "w-20"
                   }`}
