@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { AuthContext } from "../context/AuthContext";
@@ -7,8 +8,13 @@ import MainFooter from "../main/MainFooter";
 import QnAListCard from "../quesComp/QnAListCard";
 export default function QnAPage() {
   const isPcOrMobile = useMediaQuery({ query: "(max-width: 400px)" });
-  const { username } = useContext(AuthContext);
-  
+  const { username, role } = useContext(AuthContext);
+  const [viewAll, setViewAll] = useState(true);
+
+  useEffect(() => {
+    console.log("현재 role", role);
+  }, [role]);
+
   return (
     <div className={`w-full h-screen relative flex flex-col`}>
       <MainHeader />
@@ -30,12 +36,15 @@ export default function QnAPage() {
             }`}
           >
             <button
+              // 전체 질문 보기 함수 true
+              onClick={() => setViewAll(true)}
               className={`bg-slate-300 rounded-3xl py-2 px-3 text-sky-950 font-bold hover:bg-sky-200 mx-3
                             ${isPcOrMobile ? "text-sm w-32" : ""}`}
             >
               전체 질문 조회
             </button>
             <button
+              onClick={() => setViewAll(false)}
               className={`bg-slate-300 rounded-3xl py-2 px-3 text-sky-950 font-bold hover:bg-sky-200 mx-3
                               ${isPcOrMobile ? "text-sm w-32" : ""}`}
             >
@@ -43,17 +52,29 @@ export default function QnAPage() {
             </button>
           </div>
           <div className="flex flex-row overflow-y-scroll h-96 m-3">
-            <QnAListCard />
+            <QnAListCard viewAll={viewAll} username={username} />
+            {/* 상태와 사용자 이름 전달 */}
           </div>
         </div>
-        <Link to="/QuessForm">
-          <button
-            type="submit"
-            className={`bg-slate-200 text-sky-950 hover:bg-sky-200 px-16 py-3 rounded-2xl text-xl font-semibold mt-5 mb-12`}
-          >
-            질문 작성
-          </button>
-        </Link>
+        <div>
+          <Link to="/QuessForm">
+            <button
+              type="submit"
+              className={`bg-slate-200 text-sky-950 hover:bg-sky-200 px-16 py-3 rounded-2xl text-xl font-semibold mt-5 mx-3 mb-12`}
+            >
+              질문 작성
+            </button>
+          </Link>
+          {role === "ROLE_ADMIN" && (
+            <Link to="/AnsForm">
+            <button
+              type="submit"
+              className={`bg-slate-200 text-sky-950 hover:bg-sky-200 px-16 py-3 rounded-2xl text-xl font-semibold mt-5 mx-3 mb-12`}
+            >
+              답변 작성
+            </button></Link>
+          )}
+        </div>
       </div>
       <MainFooter />
     </div>

@@ -5,27 +5,30 @@ import answered from "../img/answered.png";
 import ongoing from "../img/ongoing.png";
 import { AuthContext } from "../context/AuthContext";
 
-export default function QnAListCard() {
-  const [allQnA, setAllQnA] = useState([]);
+export default function QnAListCard({ viewAll, username }) {
+  const [quess, setQuess] = useState([]);
   const isPcOrMobile = useMediaQuery({ query: "(max-width: 400px)" });
-  // const { username } = useContext(AuthContext);
-  const [myQuess, setMyQuess] = useState([]);
 
   // 컴포넌트가 마운트 될 때 특정 작업 수행
   useEffect(() => {
     const fetchAllQnA = async () => {
       try {
-        const data = await getAllQnA();
-        setAllQnA(data);
+        // 데이터를 보는데 viewAll 이면 ? 모든 질문 가져옴 : 유저별 질문 가져옴 
+        const data = viewAll
+          ? await getAllQnA()
+          : await getQuessByUsername(username);
+        // 혹시 데이터 형태가 배열이 아니면 배열로 변환
+        setQuess(Array.isArray(data) ? data : [data]);
         console.log(data);
       } catch (error) {
         console.error("전체 질의응답 패치 실패", error);
+        setQuess([]);
       }
     };
     fetchAllQnA();
     // 정의된 fetchAllQnA() 함수를 호출, 데이터 가져오는 작업 수행
-  }, []);
-  // 빈 배열을 두번째 인수로 전달
+  }, [viewAll, username]);
+  // viewAll과 username이 바뀔때마다 데이터 다시 로드
   // 이 useEffect 훅이 컴포넌트가 처음 마운트 될 때 한번만 수행되도록
 
   return (
@@ -43,7 +46,7 @@ export default function QnAListCard() {
             : "w-full grid grid-cols-2 place-items-center gap-1"
         }`}
       >
-        {allQnA.map((item, index) => {
+        {quess.map((item, index) => {
           // allQnA.map 내부에서 JSX를 반환하기 위해 return 키워드를 사용해줘야함
           return (
             <div

@@ -10,6 +10,10 @@ export const AuthProvider = ({ children }) => {
     return localStorage.getItem("username") || null;
   });
 
+  const [role, setRole] = useState(() => {
+    return localStorage.getItem("role") || null;
+  });
+
   useEffect(() => {
     // username이 변경될 때마다 localStorage에 저장
     if (username) {
@@ -19,9 +23,17 @@ export const AuthProvider = ({ children }) => {
     }
   }, [username]);
 
+  useEffect(() => {
+    if (role) {
+      localStorage.setItem("role", role);
+    } else {
+      localStorage.removeItem("role");
+    }
+  }, [role]);
+
   return (
     // Provider는 context를 구독하는 모든 컴포넌트에게 상태를 제공
-    <AuthContext.Provider value={{ username, setUsername }}>
+    <AuthContext.Provider value={{ username, setUsername, role, setRole}}>
       {children}
     </AuthContext.Provider>
   );

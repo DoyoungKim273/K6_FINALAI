@@ -33,7 +33,7 @@ export const getAllQuess = async () => {
 export const getQuessByUsername = async (username) => {
   try {
     const response = await axios.get(
-      `http://${process.env.REACT_APP_BACK_END_SERVER}/qna/questions/${username}`
+      `http://${process.env.REACT_APP_BACK_END_SERVER}/qna/myQuestions`
     );
     return response.data;
   } catch (error) {
@@ -57,3 +57,5 @@ export const createQuess = async (question) => {
     throw error;
   }
 };
+
+// export const createQuess = async ()

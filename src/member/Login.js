@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const isPcOrMobile = useMediaQuery({ query: "(max-width: 400px" });
-  const { username, setUsername } = useContext(AuthContext);
+  const { username, setUsername, setRole } = useContext(AuthContext);
   const [carNumA, setCarNumA] = useState("");
   const [carMiddleChar, setCarMiddleChar] = useState("");
   const [carNumB, setCarNumB] = useState("");
@@ -46,9 +46,13 @@ export default function Login() {
       if (token) {
         localStorage.setItem("jwt", token);
         console.log("jwt 토큰", token);
+        // 응답 데이터에서 role 추출
+        const {role} = response.data;
         setUsername(usernameValue);
+        setRole(role);
         console.log("context로 전달될 username", usernameValue);
-        // 로그인이 진행된 후 context에 username 저장
+        console.log("context로 전달될 role", role);
+        // 로그인이 진행된 후 context에 username, role 저장
         alert("로그인 성공");
         navigate("/");
       } else {
