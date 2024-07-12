@@ -111,12 +111,15 @@ export default function Login() {
                   value={carNumA}
                   onChange={(e) => {
                     const value = e.target.value;
-                    if (value <= 0) {
+                    if (value === "") {
+                      setCarNumA("");
+                    } else if (isNaN(value) || Number(value) <= 0) {
                       alert("유효한 숫자를 입력해주세요.");
                     } else {
                       setCarNumA(value);
                     }
-                  }}                  placeholder="앞번호"
+                  }}
+                  placeholder="앞번호"
                   className={`rounded-md p-2 mr-2 ${
                     isPcOrMobile ? "w-16" : "w-20"
                   }`}
@@ -142,11 +145,15 @@ export default function Login() {
                   value={carNumB}
                   onChange={(e) => {
                     const value = e.target.value;
-                    if (value <= 0) {
+                    if (value === "") {
+                      setCarNumB("");
+                    } else if (isNaN(value) || Number(value) <= 0) {
+                      alert("유효한 숫자를 입력해주세요.");
                     } else {
                       setCarNumB(value);
                     }
-                  }}                  placeholder="뒷번호"
+                  }}
+                  placeholder="뒷번호"
                   className={`rounded-md p-2 ml-2 ${
                     isPcOrMobile ? "w-16" : "w-20"
                   }`}

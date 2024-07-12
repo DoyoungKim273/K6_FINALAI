@@ -284,10 +284,10 @@ const ServiceDataGet = () => {
             {/* 예측된 시간 배열의 길이가 0보다 긴가 ? ( 모바일인가 ? (예상입출문~1) : (예상입출문2)) : (모바일인가 ? (예측한다~1) : (예측한다~2) */}
             {hourlyPredictedTimes.length > 0 ? ( isPcOrMobile ? (<p>
                 " {formData.hour} "시의 예상 입출문 소요시간은 <br/>
-                {getPredictedTimeHour(formData.hour)} " 분입니다.
+                " {getPredictedTimeHour(formData.hour)} " 분입니다.
               </p>) : (<p>
                 " {formData.hour} "시의 예상 입출문 소요시간은
-                {getPredictedTimeHour(formData.hour)} " 분입니다.
+                " {getPredictedTimeHour(formData.hour)} " 분입니다.
               </p>)
             ) : isPcOrMobile ? (
               <p>

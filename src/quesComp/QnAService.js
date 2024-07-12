@@ -29,6 +29,7 @@ export const getAllQuess = async () => {
   }
 };
 
+// 나의 질문만을 호출
 export const getQuessByUsername = async (username) => {
   try {
     const response = await axios.get(

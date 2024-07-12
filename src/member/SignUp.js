@@ -155,7 +155,10 @@ export default function SignUp() {
                   // 음수 입력 방지
                   onChange={(e) => {
                     const value = e.target.value;
-                    if (value <= 0) {
+                    // 사용자가 오타 내서 지울때 alert 창 뜨는 문제 해결
+                    if (value === ""){
+                      setCarNumA("")
+                    } else if (isNaN(value) || Number(value) <= 0) {
                       alert("유효한 숫자를 입력해주세요.");
                     } else {
                       setCarNumA(value);
@@ -169,14 +172,7 @@ export default function SignUp() {
                 />
                 <select
                   value={carMiddleChar}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value <= 0) {
-                      alert("유효한 숫자를 입력해주세요.");
-                    } else {
-                      setCarNumB(value);
-                    }
-                  }}
+                  onChange={(e) => setCarMiddleChar(e.target.value)}
                   className={`rounded-md p-2 text-slate-400 w-16`}
                   required
                 >
@@ -192,7 +188,16 @@ export default function SignUp() {
                 <input
                   type="number"
                   value={carNumB}
-                  onChange={(e) => setCarNumB(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === ""){
+                      setCarNumB("")
+                    } else if (isNaN(value) || Number(value) <= 0) {
+                      alert("유효한 숫자를 입력해주세요.");
+                    } else {
+                      setCarNumB(value);
+                    }
+                  }}
                   placeholder="뒷번호"
                   className={`rounded-md p-2 ml-2 ${
                     isPcOrMobile ? "w-16" : "w-20"

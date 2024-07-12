@@ -133,6 +133,8 @@ export default function MainHeader() {
                   </>
                 ) : (
                   <>
+                  <div className="text-slate-50 font-semibold mt-2 mr-3"> 🚢 {username}  회원님, 환영합니다 🚢
+                  </div>
                     <button
                       className="bg-slate-300 rounded-3xl py-2 px-3 text-sky-950 font-bold hover:bg-sky-200 mx-3"
                       onClick={handleLogout}
