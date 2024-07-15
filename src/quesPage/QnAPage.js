@@ -65,15 +65,7 @@ export default function QnAPage() {
               질문 작성
             </button>
           </Link>
-          {role === "ROLE_ADMIN" && (
-            <Link to="/AnsForm">
-            <button
-              type="submit"
-              className={`bg-slate-200 text-sky-950 hover:bg-sky-200 px-16 py-3 rounded-2xl text-xl font-semibold mt-5 mx-3 mb-12`}
-            >
-              답변 작성
-            </button></Link>
-          )}
+         
         </div>
       </div>
       <MainFooter />

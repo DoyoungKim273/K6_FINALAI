@@ -42,6 +42,7 @@ export const getQuessByUsername = async (username) => {
   }
 };
 
+// 질문 생성
 export const createQuess = async (question) => {
   try {
     console.log("백으로 넘어갈 예정인 생성된 질문", question);
@@ -58,4 +59,10 @@ export const createQuess = async (question) => {
   }
 };
 
-// export const createQuess = async ()
+// 질문 인덱스별로 가져오기
+export const getQnAById = async (id) => {
+  const response = await axios.get(
+    `http://${process.env.REACT_APP_BACK_END_SERVER}/qna/questions/${id}`
+  );
+  return response.data;
+};

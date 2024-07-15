@@ -59,6 +59,7 @@ function App() {
             <Route path="/Login" element={<Login />} />
             <Route path="/QnAPage" element={<QnAPage />} />
             <Route path="/QnAView" element={<QnAView />} />
+            <Route path="/qna/questions/:id" element={<QnAView />} />
             <Route path="/QuessForm" element={<QuessForm />} />
             <Route path="/AnsForm" element={<AnsForm />} />
             <Route path="/ServicePage" element={<ServicePage />} />
