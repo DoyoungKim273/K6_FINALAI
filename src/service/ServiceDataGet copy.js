@@ -186,10 +186,10 @@ const ServiceDataGet = () => {
 
   return (
     <div
-      className={`relative bg-gradient-to-b from-slate-100 via-slate-50 to-slate-100 rounded-2xl ${
+      className={`relative bg-gradient-to-b from-slate-100 via-slate-50 to-slate-100 rounded-2xl opacity-90 ${
         isPcOrMobile
-          ? " overflow-y-auto h-[calc(100vh-200px)] w-96 mx-5 opacity-95"
-          : "w-4/6 m-10 opacity-90"
+          ? " overflow-y-auto h-[calc(100vh-200px)] w-96 mx-5 "
+          : "w-4/6 m-10 "
       } `}
     >
       <div

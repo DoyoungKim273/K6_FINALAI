@@ -26,7 +26,7 @@ export default function QnAPage() {
           } `}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-slate-700 via-slate-600 to-slate-700 rounded-2xl opacity-80"></div>
-          <h2 className={`relative text-center text-2xl font-bold mx-7 my-10 text-slate-50`}>
+          <h2 className={`relative text-center text-2xl font-bold mx-7 my-10 text-white`}>
             질의응답 게시판
           </h2>
           <div
@@ -52,7 +52,7 @@ export default function QnAPage() {
               나의 질문 조회
             </button>
           </div>
-          <div className=" relative flex flex-row overflow-y-scroll h-96 m-3">
+          <div className=" relative flex flex-row overflow-y-scroll h-80 m-3">
             <QnAListCard viewAll={viewAll} username={username} />
             {/* 상태와 사용자 이름 전달 */}
           </div>

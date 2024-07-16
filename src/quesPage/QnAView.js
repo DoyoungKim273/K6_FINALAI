@@ -60,7 +60,7 @@ export default function QnAView() {
             <div className="absolute inset-0 bg-gradient-to-b from-slate-700 via-slate-600 to-slate-700 rounded-2xl opacity-80"></div>
             <div className={`relative flex flex-col items-center justify-center`}>
               <h1
-                className={`text-center text-2xl font-bold mx-7 my-10 text-slate-50`}
+                className={`text-center text-2xl font-bold mx-7 my-10 text-white`}
               >
                  질문 상세보기 
               </h1>

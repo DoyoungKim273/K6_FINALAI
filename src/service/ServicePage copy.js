@@ -15,6 +15,7 @@ export default function ServicePage() {
       <div className={`flex-grow flex justify-center items-center h-screen ${isPcOrMobile ? "" : "" }`}>
         <ServiceDataGet />
       </div>
+      
     {/* </div> */}
     <MainFooter />
     </>

@@ -63,17 +63,17 @@ export default function AnsForm() {
           className={`w-full flex flex-col items-center justify-center`}
         >
           <div className={`relative ${isPcOrMobile ? "w-96" : "w-4/6 m-5 "} `}>
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-200 via-slate-50 to-slate-200 rounded-2xl opacity-80"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-700 via-slate-600 to-slate-700 rounded-2xl opacity-80"></div>
 
             <div
               className={`relative flex flex-col items-center justify-center`}
             >
               <h1
-                className={`text-center text-2xl font-bold mx-7 my-9 text-sky-950`}
+                className={`text-center text-2xl font-bold mx-7 my-9 text-white`}
               >
                  관리자의 답변 작성란 
               </h1>
-              <div>- 질문 내용 -</div>
+              <div className="text-white">- 질문 내용 -</div>
               <div
                 className={`rounded-2xl px-4 py-2 mt-3 bg-yellow-100 ${
                   isPcOrMobile ? "w-5/6 mb-3" : "w-4/6 mb-3"
