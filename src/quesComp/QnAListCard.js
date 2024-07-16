@@ -57,7 +57,7 @@ export default function QnAListCard({ viewAll, username }) {
               }`}
             >
               <div
-                className={`bg-yellow-200 hover:bg-yellow-300 rounded-2xl pb-2`}
+                className={`bg-yellow-200 hover:bg-yellow-2 00 rounded-2xl pb-2`}
                 key={index}
               >
                 <div className={`flex flex-row ${isPcOrMobile ? " " : ""}`}>

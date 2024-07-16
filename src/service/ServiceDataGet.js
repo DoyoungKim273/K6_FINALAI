@@ -13,6 +13,8 @@ import {
 import { fetchData, countOccurrencesInXml } from "./ServiceFlsk";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "../App.css";
+import logo from "../img/portluckLogoCircle.png";
 
 const ServiceDataGet = () => {
   const [formData, setFormData] = useState({
@@ -29,6 +31,8 @@ const ServiceDataGet = () => {
   const [docksCount, setDocksCount] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const isPcOrMobile = useMediaQuery({ query: "(max-width: 400px)" });
+  const [isBlink, setIsBlink] = useState(false);
+  // 반짝거림 상태 관리
 
   // 트럭 유형 선택지 배열
   const truckTypes = [
@@ -79,7 +83,7 @@ const ServiceDataGet = () => {
     for (let hour = 0; hour <= 24; hour++) {
       try {
         const response = await axios.post("http://localhost:5000/predict", {
-          ...formData, 
+          ...formData,
           // 스프레드 연산자
           hour,
           ship_count: docksCount,
@@ -90,7 +94,7 @@ const ServiceDataGet = () => {
         predictions.push({
           hour,
           predicted_time: roundedPredictedTime,
-        }); 
+        });
         // 예측 데이터를 predictions 배열에 추가
         console.log(`시간 ${hour}에 대한 예측:`, roundedPredictedTime);
       } catch (error) {
@@ -117,7 +121,7 @@ const ServiceDataGet = () => {
   const filterData = formData.hour
     ? hourlyPredictedTimes.filter((data) => data.hour == formData.hour)
     : hourlyPredictedTimes;
-    // 존재하지 않는 경우 배열 전체를 반환
+  // 존재하지 않는 경우 배열 전체를 반환
 
   // 특정 시간에 대한 예측 시간 반환
   const getPredictedTimeHour = (hour) => {
@@ -144,6 +148,7 @@ const ServiceDataGet = () => {
     } else {
       fetchHourlyPredictions();
       setIsSubmitted(true);
+      setIsBlink(true);
     }
   };
 
@@ -159,6 +164,8 @@ const ServiceDataGet = () => {
     });
     setSelectedDate(new Date(2024, 0, 1));
     setIsSubmitted(false);
+    // 리셋하면 반짝거림 초기화
+    setIsBlink(false);
     setHourlyPredictedTimes([]);
   };
 
@@ -175,13 +182,16 @@ const ServiceDataGet = () => {
 
   return (
     <div
-      className={`bg-gradient-to-b from-slate-100 via-slate-50 to-slate-100 rounded-2xl ${
+      className={`relative ${
         isPcOrMobile
           ? " overflow-y-auto h-[calc(100vh-200px)] w-96 m-5 "
           : "w-4/6 m-10 "
       } `}
     >
-      <div className={`flex flex-col items-center justify-center`}>
+      <div
+        className={`absolute inset-0 bg-gradient-to-b from-slate-100 via-slate-50 to-slate-100 rounded-2xl opacity-80`}
+      ></div>
+      <div className={`relative flex flex-col items-center justify-center`}>
         <h1 className={`text-center text-2xl font-bold mx-7 my-9 text-sky-950`}>
           화물차 소요시간 예측
         </h1>
@@ -232,7 +242,7 @@ const ServiceDataGet = () => {
               name="hour"
               value={formData.hour}
               onChange={handleChange}
-              placeholder=" 시간"
+              placeholder=" 시간 (0 ~ 24시)"
               className={`rounded-md p-1  hover:bg-sky-200 text-slate-400 ${
                 isPcOrMobile ? "w-32 h-10 ml-2 mb-1 " : "w-16 h-10 mt-2 mx-1"
               }`}
@@ -279,81 +289,112 @@ const ServiceDataGet = () => {
         >
           <div
             className={`flex flex-col items-center justify-center text-center bg-sky-800 text-slate-50 rounded-lg
-              ${isPcOrMobile ? "ml-10 text-sm p-2" : "ml-14 mb-1 p-1"}`}
+              ${isPcOrMobile ? "ml-10 text-sm p-3" : "ml-14 mb-1 py-2 px-3"}`}
           >
             {/* 예측된 시간 배열의 길이가 0보다 긴가 ? ( 모바일인가 ? (예상입출문~1) : (예상입출문2)) : (모바일인가 ? (예측한다~1) : (예측한다~2) */}
-            {hourlyPredictedTimes.length > 0 ? ( isPcOrMobile ? (<p>
-                " {formData.hour} "시의 예상 입출문 소요시간은 <br/>
-                " {getPredictedTimeHour(formData.hour)} " 분입니다.
-              </p>) : (<p>
-                " {formData.hour} "시의 예상 입출문 소요시간은
-                " {getPredictedTimeHour(formData.hour)} " 분입니다.
-              </p>)
+            {hourlyPredictedTimes.length > 0 ? (
+              isPcOrMobile ? (
+                <p>
+                  " {formData.hour} "시의 예상 입출문 소요시간은 <br />약 "{" "}
+                  {getPredictedTimeHour(formData.hour)} " 분입니다.
+                </p>
+              ) : (
+                <p>
+                  " {formData.hour} "시의 예상 입출문 소요시간은 약 "{" "}
+                  {getPredictedTimeHour(formData.hour)} " 분입니다.
+                </p>
+              )
             ) : isPcOrMobile ? (
               <p>
-                원하는 시간을 입력하면 <br/> 해당 시의 예상 입출문 소요시간을
-                예측합니다.
+                0시부터 24시 중 원하는 시간을 입력하면, <br />
+                입출문 소요시간을 예측합니다.
               </p>
             ) : (
               <p>
-                원하는 시간을 입력하면 해당 시의 예상 입출문 소요시간을
-                예측합니다.
+                0시부터 24시 중 원하는 시간을 입력하면, 해당 시의 입출문
+                소요시간을 예측합니다.
               </p>
             )}
           </div>
-          <div className={`flex  ${isPcOrMobile ? "flex-col" : "flex-row"}`}>
+          <div
+            className={`flex justify-center items-center ${
+              isPcOrMobile ? "flex-col" : "flex-row"
+            }`}
+          >
+            {/* 연산자 주의 !== */}
+            {hourlyPredictedTimes.length !== 25 && (
+              <div className={`flex flex-col justify-center items-center`}>
+                <img
+                  src={logo}
+                  alt="logo"
+                  className={`
+                    ${isBlink ? "blinking" : ""}
+                    ${
+                      isPcOrMobile
+                        ? "ml-10 mt-5 w-52 h-52"
+                        : "mb-20 ml-14 mt-20 w-64 h-64"
+                    } `}
+                ></img>
+              </div>
+            )}
             {/* 0시부터 12시까지의 데이터를 위한 BarChart */}
-            <div className={`flex flex-col justify-center items-center`}>
-              <div className={`${isPcOrMobile ? "mt-5 ml-10 " : "mt-3 ml-16"}`}>
-                오전
+            {hourlyPredictedTimes.length === 25 && (
+              <div className={`flex flex-col justify-center items-center`}>
+                <div
+                  className={`${isPcOrMobile ? "mt-5 ml-10 " : "mt-3 ml-16"}`}
+                >
+                  오전
+                </div>
+                <BarChart
+                  width={350}
+                  height={400}
+                  data={morningData}
+                  margin={{ top: 10, right: 0, left: 0, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="hour" />
+                  <YAxis domain={[0, 130]} />
+                  <Tooltip />
+                  <Bar dataKey="predicted_time">
+                    {morningData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={graphColor(entry.predicted_time)}
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
               </div>
-              <BarChart
-                width={350}
-                height={400}
-                data={morningData}
-                margin={{ top: 10, right: 0, left: 0, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="hour" />
-                <YAxis domain={[0, 130]} />
-                <Tooltip />
-                <Bar dataKey="predicted_time">
-                  {morningData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={graphColor(entry.predicted_time)}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </div>
+            )}
 
-            {/* 13시부터 24시까지의 데이터를 위한 BarChart */}
-            <div className={`flex flex-col justify-center items-center`}>
-              <div className={`${isPcOrMobile ? "ml-10" : "mt-3 ml-16"}`}>
-                오후
+            {hourlyPredictedTimes.length === 25 && (
+              // 13시부터 24시까지의 데이터를 위한 BarChart
+              <div className={`flex flex-col justify-center items-center`}>
+                <div className={`${isPcOrMobile ? "ml-10" : "mt-3 ml-16"}`}>
+                  오후
+                </div>
+                <BarChart
+                  width={350}
+                  height={400}
+                  data={afternoonData}
+                  margin={{ top: 10, right: 0, left: 0, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="hour" />
+                  <YAxis domain={[0, 130]} />
+                  <Tooltip />
+                  <Bar dataKey="predicted_time">
+                    {/* 그냥 변수명을 entry로 한 것이고 value 등 다른 값을 넣어도 상관 없음 */}
+                    {afternoonData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={graphColor(entry.predicted_time)}
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
               </div>
-              <BarChart
-                width={350}
-                height={400}
-                data={afternoonData}
-                margin={{ top: 10, right: 0, left: 0, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="hour" />
-                <YAxis domain={[0, 130]} />
-                <Tooltip />
-                <Bar dataKey="predicted_time">
-                  {/* 그냥 변수명을 entry로 한 것이고 value 등 다른 값을 넣어도 상관 없음 */}
-                  {afternoonData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={graphColor(entry.predicted_time)}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </div>
+            )}
           </div>
         </div>
       </div>

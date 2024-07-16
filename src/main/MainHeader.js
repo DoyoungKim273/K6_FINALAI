@@ -82,13 +82,13 @@ export default function MainHeader() {
                         <>
                           <a
                             href="/SignUp"
-                            className="block px-4 py-2 text-sky-950 font-bold hover:bg-sky-200 mx-3"
+                            className="block px-4 py-2 text-sky-950 font-bold hover:bg-sky-300 mx-3"
                           >
                             회원가입
                           </a>
                           <a
                             href="/Login"
-                            className="block px-4 py-2 text-sky-950 font-bold hover:bg-sky-200 mx-3"
+                            className="block px-4 py-2 text-sky-950 font-bold hover:bg-sky-300 mx-3"
                           >
                             로그인
                           </a>
@@ -97,13 +97,13 @@ export default function MainHeader() {
                         <>
                           <div
                             onClick={handleLogout}
-                            className="block px-4 py-2 text-sky-950 font-bold hover:bg-sky-200 mx-3"
+                            className="block px-4 py-2 text-sky-950 font-bold hover:bg-sky-300 mx-3"
                           >
                             로그아웃
                           </div>
                           <a
                             href="/QnAPage"
-                            className="block px-4 py-2 text-sky-950 font-bold hover:bg-sky-200 mx-3"
+                            className="block px-4 py-2 text-sky-950 font-bold hover:bg-sky-300 mx-3"
                           >
                             질의응답
                           </a>
@@ -120,30 +120,30 @@ export default function MainHeader() {
                   <>
                     <a
                       href="/SignUp"
-                      className="bg-slate-300 rounded-3xl py-2 px-3 text-sky-950 font-bold hover:bg-sky-200 mx-3"
+                      className="bg-slate-300 rounded-3xl py-2 px-3 text-sky-950 font-bold hover:bg-sky-300 mx-3"
                     >
                       회원가입
                     </a>
                     <a
                       href="/Login"
-                      className="bg-slate-300 rounded-3xl py-2 px-3 text-sky-950 font-bold hover:bg-sky-200 mx-3"
+                      className="bg-slate-300 rounded-3xl py-2 px-3 text-sky-950 font-bold hover:bg-sky-300 mx-3"
                     >
                       로그인
                     </a>
                   </>
                 ) : (
                   <>
-                  <div className="text-slate-50 font-semibold mt-2 mr-3"> 🚢 {username}  회원님, 환영합니다 🚢
+                  <div className="text-slate-50 font-semibold mt-2 mr-3">  {username}  회원님, 환영합니다 
                   </div>
                     <button
-                      className="bg-slate-300 rounded-3xl py-2 px-3 text-sky-950 font-bold hover:bg-sky-200 mx-3"
+                      className="bg-slate-300 rounded-3xl py-2 px-3 text-sky-950 font-bold hover:bg-sky-300 mx-3"
                       onClick={handleLogout}
                     >
                       로그아웃
                     </button>
                     <a
                       href="/QnAPage"
-                      className="bg-slate-300 rounded-3xl py-2 px-3 text-sky-950 font-bold hover:bg-sky-200 mx-3"
+                      className="bg-slate-300 rounded-3xl py-2 px-3 text-sky-950 font-bold hover:bg-sky-300 mx-3"
                     >
                       질의응답
                     </a>

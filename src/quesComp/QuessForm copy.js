@@ -37,7 +37,7 @@ export default function QuessForm() {
       );
       console.log("질문 제출 성공", response.data);
       alert("질문 제출 성공");
-      navigate("/QnAPage");
+      navigate("/QnAPage")
     } catch (error) {
       console.error("질문 제출 실패", error);
       alert("질문 제출 실패");
@@ -52,16 +52,16 @@ export default function QuessForm() {
           onSubmit={handleSubmit}
           className={`w-full flex flex-col items-center justify-center`}
         >
-          <div className={`relative ${isPcOrMobile ? "w-96" : "w-4/6 m-5"}`}>
-            {/* 배경용 div에만 opacity를 적용 */}
-            {/* 외부 div를 추가하고 relative 속성을 설정하여 자식 요소의 위치를 기준으로 삼음 */}
-            {/* 배경용 div를 absolute로 설정하여 부모 div의 전체 영역을 덮도록, 여기만 투명 적용 */}
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-700 via-slate-600 to-slate-700 rounded-2xl opacity-80"></div>
-            <div className="relative flex flex-col items-center justify-center">
+          <div
+            className={`bg-gradient-to-b from-slate-200 via-slate-100 to-slate-200 rounded-2xl opacity-95 ${
+              isPcOrMobile ? "w-96" : "w-4/6 m-5 "
+            } `}
+          >
+            <div className={`flex flex-col items-center justify-center`}>
               <h1
-                className={`text-center text-2xl font-bold mx-7 my-10 text-slate-50`}
+                className={`text-center text-2xl font-bold mx-7 my-9 text-sky-950`}
               >
-                질문 작성란
+                 질문 작성란 
               </h1>
               <input
                 type="text"
@@ -87,14 +87,14 @@ export default function QuessForm() {
           <div className={`flex flex-row`}>
             <Link
               to="/QnAPage"
-              className={`bg-slate-50 text-sky-950 hover:bg-sky-300  rounded-2xl font-semibold mt-5 mb-5 mx-1 opacity-85
+              className={`bg-slate-200 text-sky-950 hover:bg-sky-300  rounded-2xl font-semibold mt-5 mb-5 mx-1
                 ${isPcOrMobile ? "px-7 py-2" : "text-xl px-14 py-3"}`}
             >
               목록으로 돌아가기
             </Link>
             <button
               type="submit"
-              className={`bg-yellow-100 text-sky-950 hover:bg-sky-300  rounded-2xl font-semibold mt-5 mb-5 mx-1 opacity-85
+              className={`bg-yellow-100 text-sky-950 hover:bg-sky-300  rounded-2xl font-semibold mt-5 mb-5 mx-1
                  ${isPcOrMobile ? "px-7 py-2" : "text-xl px-14 py-3"}`}
             >
               작성한 질문 제출

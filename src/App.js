@@ -61,7 +61,7 @@ function App() {
             <Route path="/QnAView" element={<QnAView />} />
             <Route path="/qna/questions/:id" element={<QnAView />} />
             <Route path="/QuessForm" element={<QuessForm />} />
-            <Route path="/AnsForm" element={<AnsForm />} />
+            <Route path="/AnsForm/:id" element={<AnsForm />} />
             <Route path="/ServicePage" element={<ServicePage />} />
             <Route path="/ServiceDataGet" element={<ServiceDataGet />} />
           </Routes>

@@ -59,6 +59,21 @@ export const createQuess = async (question) => {
   }
 };
 
+// 답변 생성
+export const createAns = async (answer) => {
+  try {
+    console.log("백으로 넘어갈 예정인 생성된 답변", answer);
+    const response = await axios.post(
+      `http://${process.env.REACT_APP_BACK_END_SERVER}/qna/answers`,
+      answer
+    );
+    return response.data;
+  } catch (error) {
+    console.log("답변 생성 실패", error);
+    throw error;
+  }
+};
+
 // 질문 인덱스별로 가져오기
 export const getQnAById = async (id) => {
   const response = await axios.get(
@@ -66,3 +81,11 @@ export const getQnAById = async (id) => {
   );
   return response.data;
 };
+
+// 질문 삭제
+export const deleteQuess = async (id) => {
+  const response = await axios.delete(
+    `http://${process.env.REACT_APP_BACK_END_SERVER}/qna/questions/${id}`
+  )
+  return response;
+}
