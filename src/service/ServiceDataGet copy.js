@@ -25,8 +25,8 @@ const ServiceDataGet = () => {
     // 초기값을 빈 문자열로 설정
   });
 
-  // 초기 날짜 설정
-  const [selectedDate, setSelectedDate] = useState(new Date(2024, 0, 1));
+  // 초기 날짜 - 오늘의 날짜로 설정
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [hourlyPredictedTimes, setHourlyPredictedTimes] = useState([]);
   const [docksCount, setDocksCount] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -186,10 +186,10 @@ const ServiceDataGet = () => {
 
   return (
     <div
-      className={`relative bg-gradient-to-b from-slate-100 via-slate-50 to-slate-100 rounded-2xl opacity-90 ${
+      className={`relative bg-gradient-to-b from-slate-100 via-slate-50 to-slate-100 rounded-2xl ${
         isPcOrMobile
-          ? " overflow-y-auto h-[calc(100vh-200px)] w-96 mx-5 "
-          : "w-4/6 m-10 "
+          ? " overflow-y-auto h-[calc(100vh-200px)] w-96 mx-5 opacity-95"
+          : "w-4/6 m-10 opacity-90"
       } `}
     >
       <div
@@ -300,12 +300,12 @@ const ServiceDataGet = () => {
             {hourlyPredictedTimes.length > 0 ? (
               isPcOrMobile ? (
                 <p>
-                  " {formData.hour} "시의 예상 입출문 소요시간은 <br />약 "{" "}
+                  " {formData.hour} " 시의 예상 입출문 소요시간은 <br />약 "{" "}
                   {getPredictedTimeHour(formData.hour)} " 분입니다.
                 </p>
               ) : (
                 <p>
-                  " {formData.hour} "시의 예상 입출문 소요시간은 약 "{" "}
+                  " {formData.hour} " 시의 예상 입출문 소요시간은 약 "{" "}
                   {getPredictedTimeHour(formData.hour)} " 분입니다.
                 </p>
               )
@@ -354,11 +354,16 @@ const ServiceDataGet = () => {
                   width={350}
                   height={400}
                   data={morningData}
-                  margin={{ top: 10, right: 0, left: 0, bottom: 5 }}
+                  margin={{ top: 10, right: 0, left: 0, bottom: 15 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="hour" />
-                  <YAxis domain={[0, 130]} />
+                  <XAxis 
+                  dataKey="hour" 
+                  />
+                  <YAxis 
+                  domain={[0, 130]} 
+                  label={{ value: '예상 시간 (분)', angle: -90, position: 'outsideLeft', dx:5 , dy: -90}}
+                  />
                   <Tooltip />
                   <Bar dataKey="predicted_time">
                     {morningData.map((entry, index) => (
@@ -382,11 +387,17 @@ const ServiceDataGet = () => {
                   width={350}
                   height={400}
                   data={afternoonData}
-                  margin={{ top: 10, right: 0, left: 0, bottom: 5 }}
+                  margin={{ top: 10, right: 0, left: 0, bottom: 15 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="hour" />
-                  <YAxis domain={[0, 130]} />
+                  <XAxis 
+                  dataKey="hour"
+                  label={{ value: "예측 시간 (시)", position: "insideBottomRight", dx:5, dy:13 }}
+                  />
+                  <YAxis 
+                  domain={[0, 130]} 
+                  // label={{ value: '예상 시간 (분)', angle: -90, position: 'outsideLeft', dx:5 , dy: -90}}
+                  />
                   <Tooltip />
                   <Bar dataKey="predicted_time">
                     {/* 그냥 변수명을 entry로 한 것이고 value 등 다른 값을 넣어도 상관 없음 */}

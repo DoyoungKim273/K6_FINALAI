@@ -5,74 +5,70 @@ import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import MainHeader from "../main/MainHeader";
 import MainFooter from "../main/MainFooter";
-import loginIcon from "../img/loginIcon.png";
+import passwordSearch from "../img/passwordSearch.png";
 import carMiddleChars from "../data/carMiddleChars.json";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function SearchPw() {
   const isPcOrMobile = useMediaQuery({ query: "(max-width: 400px" });
   const { username, setUsername, setRole } = useContext(AuthContext);
   const [carNumA, setCarNumA] = useState("");
   const [carMiddleChar, setCarMiddleChar] = useState("");
   const [carNumB, setCarNumB] = useState("");
-  const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [emailId, setEmailId] = useState("");
+  const [emailDomain, setEmailDomain] = useState("");
+
+  //   const usernameValue = `${carNumA}${carMiddleChar}${carNumB}`;
+  const emailDomains = ["naver.com", "gmail.com", "kakao.com", "yahoo.com"];
 
   useEffect(() => {
     console.log("context로 전달된 username", username);
   }, [username]);
 
-  const usernameValue = `${carNumA}${carMiddleChar}${carNumB}`;
+  // emailId 또는 emailDomain 변경될때마다 상태 업데이트
+  useEffect(() => {
+    if (emailId && emailDomain) {
+      setEmail(`${emailId}@${emailDomain}`);
+    }
+  }, [emailId, emailDomain]);
 
+//   useEffect(() => {
+//     if (carNumA && carMiddleChar && carNumB) {
+//       setUsername(`${carNumA}${carMiddleChar}${carNumB}`);
+//     }
+//   }, [carNumA, carMiddleChar, carNumB]);
+  // 의존성 배열 - carNumA, carMiddleChar, carNumB 가 변경될때마다 useEffect 실행됨
+
+  // handleSubmit라는 비동기 함수 정의, 이 함수는 이벤트 객체 e를 매개변수로 받음
   const handleSubmit = async (e) => {
+    // 이벤트 기본 동작(페이지 새로고침 등) 방지
     e.preventDefault();
 
-    const requestDate = {
-      username: usernameValue,
-      password,
+    const requestData = {
+    //   username,
+      email,
     };
 
-    console.log("백으로 전송할 데이터", requestDate);
-
+    console.log("백으로 전송할 데이터", requestData);
     try {
+      // Axios 사용하여 '/signUp' 엔드 포인트로 POST 요청을 보냄
+      // 전송할 데이터는 username(차량번호이자 아이디), password, email(아이디 / 비밀번호 찾기 목적)
       const response = await axios.post(
-        `http://${process.env.REACT_APP_BACK_END_SERVER}/login`,
-        requestDate
+        //env에 환경변수를 사용할때는 REACT_APP_ 접두사를 사용해야함
+        `http://${process.env.REACT_APP_BACK_END_SERVER}/searchPW`,
+        requestData
       );
-
-      // 응답 헤더에서 JWT 토큰을 가져옴
-      const token = response.headers["authorization"];
-
-      // 토큰이 존재하면 로컬 스토리지에 저장하고 성공 메시지 출력
-      if (token) {
-        localStorage.setItem("jwt", token);
-        console.log("jwt 토큰", token);
-        // 응답 데이터에서 role 추출
-        const { role } = response.data;
-        setUsername(usernameValue);
-        setRole(role);
-        console.log("context로 전달될 username", usernameValue);
-        console.log("context로 전달될 role", role);
-        // 로그인이 진행된 후 context에 username, role 저장
-        alert("로그인 성공");
-        navigate("/");
-      } else {
-        // 토큰이 응답에 포함되지 않은 경우
-        console.log("jwt 토큰이 응답에 포함되지 않음");
-      }
-      // 응답 데이터를 json으로 변환하여 콘솔에 출력
-      console.log(JSON.stringify(response.data));
+      // 서버로부터의 응답 알림창으로 표시
+      alert(response.data);
     } catch (error) {
-      // 요청이 실패한 경우 에러 처리
-      // 에러가 응답 객체에 포함되어 있다면 응답 데이터를, 그렇지 않은 경우에는 에러 메시지를 출력
-      console.error(
-        "로그인 실패",
-        error.response ? error.response.data : error.message
-      );
-      alert("로그인 실패");
+      //에러 발생 시 콘솔에 표시 및 알림창 표시
+      console.error("비밀번호 찾기 실패", error);
+      alert("비밀번호 찾기 실패");
     }
   };
-
   return (
     <div className={`w-full h-screen relative flex flex-col`}>
       <MainHeader />
@@ -86,16 +82,18 @@ export default function Login() {
             className={`flex-grow flex flex-col justify-center items-center`}
           >
             <img
-              src={loginIcon}
-              alt="loginIcon"
-              className={` mt-14  ${isPcOrMobile ? "w-14 mb-2" : "w-20 mb-5"}`}
+              src={passwordSearch}
+              alt="passwordSearch"
+              className={` mt-14  ${
+                isPcOrMobile ? "w-20 mb-1" : "w-28 mb-1 mr-3"
+              }`}
             />
             <h2
               className={`text-white font-semibold mt-2 text-center ${
                 isPcOrMobile ? "text-xl mb-10" : "text-2xl mb-10"
               }`}
             >
-              로그인
+              비밀번호 찾기
             </h2>
           </div>
           <form
@@ -169,29 +167,48 @@ export default function Login() {
 
             <div className={`flex-grow flex flex-row m-2`}>
               <label
-                className={`text-white mt-8 ${
-                  isPcOrMobile ? "ml-5" : "text-lg ml-5 mb-4"
+                className={`text-white mt-2 ${
+                  isPcOrMobile ? "ml-8 mr-7" : "ml-7 mr-8 text-lg"
                 }`}
               >
-                비밀번호
+                이메일
               </label>
-              <div className="flex flex-col">
-                <Link
-                  to="/SearchPw"
-                  className="text-end text-white text-xs mb-2 hover:text-yellow-300"
-                >
-                  비밀번호를 잊으셨나요?
-                </Link>
+              <div>
                 <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="비밀번호"
-                  className={`rounded-md p-2 ml-5 ${
-                    isPcOrMobile ? "w-52" : "w-60"
-                  }`}
+                  type="text"
+                  value={emailId}
+                  // onChange 이벤트 핸들러
+                  // 화살표 함수 - e.target 은 이벤트가 발생한 DOM 요소 의미(여기서는 input 요소)
+                  // e.target.value 는 input 요소의 현재값 의미
+                  onChange={(e) => setEmailId(e.target.value)}
+                  placeholder="이메일"
+                  className={`rounded-md p-2 ${isPcOrMobile ? "w-20" : "w-24"}`}
                   required
                 />
+                <span
+                  className={`text-white font-semibold text-lg ${
+                    isPcOrMobile ? "m-2" : "m-2"
+                  }`}
+                >
+                  @
+                </span>
+                <select
+                  value={emailDomain}
+                  onChange={(e) => setEmailDomain(e.target.value)}
+                  className={`rounded-md p-2 text-slate-400 ${
+                    isPcOrMobile ? "w-24" : ""
+                  }`}
+                  required
+                >
+                  <option value="" disabled selected>
+                    email.com
+                  </option>
+                  {emailDomains.map((domain) => (
+                    <option key={domain} value={domain}>
+                      {domain}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 

@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useMediaQuery } from "react-responsive";
 import {
-  BarChart,
-  Bar,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Cell,
+  ResponsiveContainer,
 } from "recharts";
 import { fetchData, countOccurrencesInXml } from "./ServiceFlsk";
 import DatePicker from "react-datepicker";
@@ -25,8 +25,8 @@ const ServiceDataGet = () => {
     // 초기값을 빈 문자열로 설정
   });
 
-  // 초기 날짜 설정
-  const [selectedDate, setSelectedDate] = useState(new Date(2024, 0, 1));
+  // 초기 날짜 - 오늘의 날짜로 설정
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [hourlyPredictedTimes, setHourlyPredictedTimes] = useState([]);
   const [docksCount, setDocksCount] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -92,9 +92,8 @@ const ServiceDataGet = () => {
           hour,
           ship_count: docksCount,
         });
-        const roundedPredictedTime =
-          Math.round(response.data.predicted_time * 100) / 100;
-        // 소수점 둘째자리 반올림
+        const roundedPredictedTime = Math.round(response.data.predicted_time);
+        // 정수 반올림
         predictions.push({
           hour,
           predicted_time: roundedPredictedTime,
@@ -133,6 +132,17 @@ const ServiceDataGet = () => {
     return result ? result.predicted_time : null;
   };
 
+  // 60분 미만은 분만 표현, 60분 이상은 시간 & 분 표현
+  const minsToHours = (mins) => {
+    if (mins < 60) {
+      return `${mins}분`;
+    } else {
+      const hours = Math.floor(mins / 60);
+      const remainMins = Math.round(mins % 60);
+      return `${hours}시간 ${remainMins}분`;
+    }
+  };
+
   // 부두의 개수를 가져온 후 예측 데이터를 가져옴
   useEffect(() => {
     if (docksCount > 0) {
@@ -166,7 +176,7 @@ const ServiceDataGet = () => {
       hour: "",
       truck_type: "",
     });
-    setSelectedDate(new Date(2024, 0, 1));
+    setSelectedDate(new Date());
     setIsSubmitted(false);
     // 리셋하면 반짝거림 초기화
     setIsBlink(false);
@@ -294,19 +304,23 @@ const ServiceDataGet = () => {
         >
           <div
             className={`flex flex-col items-center justify-center text-center bg-sky-800 text-slate-50 rounded-lg
-              ${isPcOrMobile ? "ml-10 text-sm p-3" : "ml-14 mb-1 py-2 px-3"}`}
+              ${
+                isPcOrMobile
+                  ? "ml-20 mr-10 text-sm p-3"
+                  : "ml-14 mb-1 py-2 px-3"
+              }`}
           >
             {/* 예측된 시간 배열의 길이가 0보다 긴가 ? ( 모바일인가 ? (예상입출문~1) : (예상입출문2)) : (모바일인가 ? (예측한다~1) : (예측한다~2) */}
             {hourlyPredictedTimes.length > 0 ? (
               isPcOrMobile ? (
                 <p>
-                  " {formData.hour} "시의 예상 입출문 소요시간은 <br />약 "{" "}
-                  {getPredictedTimeHour(formData.hour)} " 분입니다.
+                  " {formData.hour} " 시의 예상 입출문 소요시간은 <br />
+                  약  " {minsToHours(getPredictedTimeHour(formData.hour))} " 입니다.
                 </p>
               ) : (
                 <p>
-                  " {formData.hour} "시의 예상 입출문 소요시간은 약 "{" "}
-                  {getPredictedTimeHour(formData.hour)} " 분입니다.
+                  " {formData.hour} " 시의 예상 입출문 소요시간은 
+                  약  " {minsToHours(getPredictedTimeHour(formData.hour))} " 입니다.
                 </p>
               )
             ) : isPcOrMobile ? (
@@ -346,58 +360,110 @@ const ServiceDataGet = () => {
             {hourlyPredictedTimes.length === 25 && (
               <div className={`flex flex-col justify-center items-center`}>
                 <div
-                  className={`${isPcOrMobile ? "mt-5 ml-10 " : "mt-3 ml-16"}`}
+                  className={` text-gray-600
+                    ${isPcOrMobile ? "mt-5 ml-10 " : "mt-3 ml-16"}`}
                 >
                   오전
                 </div>
-                <BarChart
-                  width={350}
-                  height={400}
-                  data={morningData}
-                  margin={{ top: 10, right: 0, left: 0, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="hour" />
-                  <YAxis domain={[0, 130]} />
-                  <Tooltip />
-                  <Bar dataKey="predicted_time">
-                    {morningData.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={graphColor(entry.predicted_time)}
-                      />
-                    ))}
-                  </Bar>
-                </BarChart>
+                <ResponsiveContainer width={400} height={400}>
+                  <AreaChart
+                    data={morningData}
+                    margin={{ top: 10, right: 20, left: 20, bottom: 15 }}
+                  >
+                    <defs>
+                      <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                        <stop
+                          offset="10%"
+                          stopColor="#fa6b05"
+                          stopOpacity={10}
+                        />
+                        <stop
+                          offset="90%"
+                          stopColor="#fae97d"
+                          stopOpacity={0.4}
+                        />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis
+                      dataKey="hour"
+                      label={{
+                        value: "예측 시간 (시)",
+                        position: "insideBottomRight",
+                        dx: 5,
+                        dy: 13,
+                      }}
+                    />
+                    <YAxis
+                      domain={[0, 130]}
+                      label={{
+                        value: "예상 시간 (분)",
+                        angle: -90,
+                        position: "outsideLeft",
+                        dx: 5,
+                        dy: -90,
+                      }}
+                    />
+                    <Tooltip />
+                    <Area
+                      type="monotone"
+                      dataKey="predicted_time"
+                      stroke="#696969"
+                      fill="url(#colorUv)"
+                      strokeWidth={2}
+                      dot={true}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
             )}
 
             {hourlyPredictedTimes.length === 25 && (
               // 13시부터 24시까지의 데이터를 위한 BarChart
               <div className={`flex flex-col justify-center items-center`}>
-                <div className={`${isPcOrMobile ? "ml-10" : "mt-3 ml-16"}`}>
+                <div
+                  className={` text-gray-600 ${
+                    isPcOrMobile ? "ml-10" : "mt-3 ml-16"
+                  }`}
+                >
                   오후
                 </div>
-                <BarChart
-                  width={350}
-                  height={400}
-                  data={afternoonData}
-                  margin={{ top: 10, right: 0, left: 0, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="hour" />
-                  <YAxis domain={[0, 130]} />
-                  <Tooltip />
-                  <Bar dataKey="predicted_time">
-                    {/* 그냥 변수명을 entry로 한 것이고 value 등 다른 값을 넣어도 상관 없음 */}
-                    {afternoonData.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={graphColor(entry.predicted_time)}
-                      />
-                    ))}
-                  </Bar>
-                </BarChart>
+                <ResponsiveContainer width={400} height={400}>
+                  <AreaChart
+                    data={afternoonData}
+                    margin={{ top: 10, right: 20, left: 20, bottom: 15 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis
+                      dataKey="hour"
+                      label={{
+                        value: "예측 시간 (시)",
+                        position: "insideBottomRight",
+                        dx: 5,
+                        dy: 13,
+                      }}
+                    />
+                    <YAxis
+                      domain={[0, 130]}
+                      label={{
+                        value: "예상 시간 (분)",
+                        angle: -90,
+                        position: "outsideLeft",
+                        dx: 5,
+                        dy: -90,
+                      }}
+                    />
+                    <Tooltip />
+                    <Area
+                      type="monotone"
+                      dataKey="predicted_time"
+                      stroke="#696969"
+                      fill="url(#colorUv)"
+                      strokeWidth={2}
+                      dot={true}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
             )}
           </div>
