@@ -134,7 +134,12 @@ export default function SearchPw() {
                   className={`rounded-md p-2 text-slate-400 w-16`}
                   required
                 >
-                  <option value="" disabled selected>
+                  <option
+                    className={`text-slate-300`}
+                    value=""
+                    disabled
+                    selected
+                  >
                     가
                   </option>
                   {carMiddleChars.map((char) => (
@@ -200,8 +205,13 @@ export default function SearchPw() {
                   }`}
                   required
                 >
-                  <option value="" disabled selected>
-                    email.com
+                  <option
+                    className={`text-slate-300`}
+                    value=""
+                    disabled
+                    selected
+                  >
+                    E-mail
                   </option>
                   {emailDomains.map((domain) => (
                     <option key={domain} value={domain}>
@@ -216,7 +226,7 @@ export default function SearchPw() {
               <button
                 type="submit"
                 className={`bg-yellow-200 text-sky-950 hover:bg-sky-300 px-10 py-2 rounded-2xl text-lg font-semibold 
-                  ${isPcOrMobile ? "mt-10 ml-3 ": "mt-10 mb-5 ml-7 mr-2"}`}
+                  ${isPcOrMobile ? "mt-10 ml-3 " : "mt-10 mb-5 ml-7 mr-2"}`}
               >
                 발급
               </button>

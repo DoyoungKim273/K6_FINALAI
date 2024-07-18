@@ -23,7 +23,7 @@ export default function SignUp() {
   const emailDomains = ["naver.com", "gmail.com", "kakao.com", "yahoo.com"];
 
   const navigate = useNavigate();
-  
+
   // emailId 또는 emailDomain 변경될때마다 상태 업데이트
   useEffect(() => {
     if (emailId && emailDomain) {
@@ -133,8 +133,13 @@ export default function SignUp() {
                   }`}
                   required
                 >
-                  <option value="" disabled selected>
-                    email.com
+                  <option
+                    className={`text-slate-300`}
+                    value=""
+                    disabled
+                    selected
+                  >
+                    E-mail
                   </option>
                   {emailDomains.map((domain) => (
                     <option key={domain} value={domain}>
@@ -181,7 +186,12 @@ export default function SignUp() {
                   className={`rounded-md p-2 text-slate-400 w-16`}
                   required
                 >
-                  <option value="" disabled selected>
+                  <option
+                    className={`text-slate-300`}
+                    value=""
+                    disabled
+                    selected
+                  >
                     가
                   </option>
                   {carMiddleChars.map((char) => (

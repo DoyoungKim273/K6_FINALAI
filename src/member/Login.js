@@ -136,7 +136,9 @@ export default function Login() {
                   className={`rounded-md p-2 text-slate-400 w-16`}
                   required
                 >
-                  <option value="" disabled selected>
+                  <option 
+                  className={`text-slate-300`}
+                  value="" disabled selected>
                     가
                   </option>
                   {carMiddleChars.map((char) => (

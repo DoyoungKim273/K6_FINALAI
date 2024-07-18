@@ -24,6 +24,7 @@ import QnAView from "./quesPage/QnAView";
 import AnsForm from "./quesComp/AnsForm";
 import SearchPw from "./member/SearchPw";
 import ChangePw from "./member/ChangePw";
+import OilbankAll from "./oilbankPage/OilbankAll";
 
 function App() {
   // 반응형 구현
@@ -47,6 +48,7 @@ function App() {
           {/* 경로 설정 */}
           <Routes>
             <Route path="/" element={<PortLuckMain />} />
+            <Route path="/OilbankAll" element={<OilbankAll />} />
             <Route path="/Nammok" element={<Nammok />} />
             <Route path="/DongUlsan" element={<DongUlsan />} />
             <Route path="/Sonata" element={<Sonata />} />

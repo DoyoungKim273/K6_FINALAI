@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import oilbankData from "../data/oilbank.json"; // 데이터 가져오기
-import AdBox from "./AdBox";
+import AdBox2 from "./AdBox2";
 import { useMediaQuery } from "react-responsive"; // 반응형 구현
 import { Link } from "react-router-dom";
 
@@ -38,9 +38,6 @@ export default function AdList() {
   return (
     <div>
       <div className="flex justify-end my-2 mr-1">
-        <button className="text-sm font-bold mx-1 px-6 py-1 text-white bg-slate-700 opacity-85 rounded-full">
-          <Link to="/OilbankAll">주유소 전체보기</Link>
-        </button>
         <button
           onClick={decreaseSpeed}
           className=" text-sm mx-1 px-5 py-1 text-white  bg-slate-700 opacity-85 rounded-full"
@@ -75,26 +72,26 @@ export default function AdList() {
             <div
               key={index}
               className={`min-w-max bg-yellow-300 hover:bg-yellow-200 m-4 px-4 py-4 rounded-xl text-center text-gray-900 ${
-                isPcOrMobile ? "w-32 h-24" : "text-xl w-60 h-32"
+                isPcOrMobile ? "w-32 h-24" : "text-xl w-30 h-14"
               } `}
             >
-              <AdBox oilbank={oilbank} />
+              <AdBox2 oilbank={oilbank} />
             </div>
           ))}
           {cards.map((oilbank, index) => (
             <div
               key={index}
-              className="min-w-max bg-yellow-300 hover:bg-yellow-200 w-60 h-32 m-4 px-4 py-4 rounded-xl text-center text-xl text-gray-900"
+              className="min-w-max bg-yellow-300 hover:bg-yellow-200 w-30 h-14 m-4 px-4 py-4 rounded-xl text-center text-xl text-gray-900"
             >
-              <AdBox oilbank={oilbank} />
+              <AdBox2 oilbank={oilbank} />
             </div>
           ))}
           {cards.map((oilbank, index) => (
             <div
               key={index}
-              className="min-w-max bg-yellow-300 hover:bg-yellow-200 w-60 h-32 m-4 px-4 py-4 rounded-xl text-center text-xl text-gray-900"
+              className="min-w-max bg-yellow-300 hover:bg-yellow-200 w-30 h-14 m-4 px-4 py-4 rounded-xl text-center text-xl text-gray-900"
             >
-              <AdBox oilbank={oilbank} />
+              <AdBox2 oilbank={oilbank} />
             </div>
           ))}
         </div>
