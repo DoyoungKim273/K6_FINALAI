@@ -151,7 +151,7 @@ export default function Aca() {
     <div className={`w-full h-screen relative flex flex-col`}>
       <MainHeader />
       <div ref={mapContainer} className="w-full h-full" />
-      <div className="bg-gradient-to-b from-slate-600 via-slate-500 to-slate-600 opacity-90">
+      <div className="bg-gradient-to-b from-slate-600 via-slate-500 to-slate-600 opacity-85">
         <AdList2 />
       </div>
       <MainFooter />
