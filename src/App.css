@@ -52,3 +52,39 @@
   animation: blink 2s infinite;
 }
 
+
+/* 추가된 스타일 */
+.react-datepicker {
+  font-size: 0.8em; /* 폰트 크기를 줄여서 전체 크기를 줄임 */
+  width: 100%; /* 자동 너비 조정 */
+}
+
+.react-datepicker__header {
+  padding: 8px 0; /* 헤더 패딩 조정 */
+}
+
+.react-datepicker__month {
+  margin: 0.2em; /* 월 컨테이너 마진 조정 */
+}
+
+.react-datepicker__day {
+  width: 1.2em; /* 일 크기 조정 */
+  height: 1.8em;
+  line-height: 1.2em;
+}
+
+.react-datepicker__day-name {
+  width: 1.2em; /* 요일 크기 조정 */
+  height: 1.2em;
+  line-height: 1.2em;
+}
+
+.react-datepicker__current-month {
+  font-size: 0.8em; /* 현재 월 폰트 크기 조정 */
+}
+
+.react-datepicker__navigation {
+  top: 10px; /* 네비게이션 버튼 위치 조정 */
+  width: 1.2em; /* 네비게이션 버튼 크기 조정 */
+  height: 1.2em;
+}

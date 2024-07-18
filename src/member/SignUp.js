@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import MainHeader from "../main/MainHeader";
 import MainFooter from "../main/MainFooter";
-import { useMediaQuery } from "react-responsive";
 import signUpIcon from "../img/signUpIcon.png";
 import carMiddleChars from "../data/carMiddleChars.json";
 
@@ -21,6 +22,8 @@ export default function SignUp() {
 
   const emailDomains = ["naver.com", "gmail.com", "kakao.com", "yahoo.com"];
 
+  const navigate = useNavigate();
+  
   // emailId 또는 emailDomain 변경될때마다 상태 업데이트
   useEffect(() => {
     if (emailId && emailDomain) {
@@ -56,7 +59,9 @@ export default function SignUp() {
         requestData
       );
       // 서버로부터의 응답 알림창으로 표시
-      alert(response.data);
+      console.log(response.data);
+      alert("회원가입에 성공하였습니다.");
+      navigate("/Login");
     } catch (error) {
       //에러 발생 시 콘솔에 표시 및 알림창 표시
       console.error("회원가입 실패", error);
@@ -156,8 +161,8 @@ export default function SignUp() {
                   onChange={(e) => {
                     const value = e.target.value;
                     // 사용자가 오타 내서 지울때 alert 창 뜨는 문제 해결
-                    if (value === ""){
-                      setCarNumA("")
+                    if (value === "") {
+                      setCarNumA("");
                     } else if (isNaN(value) || Number(value) <= 0) {
                       alert("유효한 숫자를 입력해주세요.");
                     } else {
@@ -190,8 +195,8 @@ export default function SignUp() {
                   value={carNumB}
                   onChange={(e) => {
                     const value = e.target.value;
-                    if (value === ""){
-                      setCarNumB("")
+                    if (value === "") {
+                      setCarNumB("");
                     } else if (isNaN(value) || Number(value) <= 0) {
                       alert("유효한 숫자를 입력해주세요.");
                     } else {

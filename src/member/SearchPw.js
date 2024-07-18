@@ -35,11 +35,11 @@ export default function SearchPw() {
     }
   }, [emailId, emailDomain]);
 
-//   useEffect(() => {
-//     if (carNumA && carMiddleChar && carNumB) {
-//       setUsername(`${carNumA}${carMiddleChar}${carNumB}`);
-//     }
-//   }, [carNumA, carMiddleChar, carNumB]);
+  //   useEffect(() => {
+  //     if (carNumA && carMiddleChar && carNumB) {
+  //       setUsername(`${carNumA}${carMiddleChar}${carNumB}`);
+  //     }
+  //   }, [carNumA, carMiddleChar, carNumB]);
   // 의존성 배열 - carNumA, carMiddleChar, carNumB 가 변경될때마다 useEffect 실행됨
 
   // handleSubmit라는 비동기 함수 정의, 이 함수는 이벤트 객체 e를 매개변수로 받음
@@ -48,21 +48,21 @@ export default function SearchPw() {
     e.preventDefault();
 
     const requestData = {
-    //   username,
+      //   username,
       email,
     };
 
     console.log("백으로 전송할 데이터", requestData);
     try {
-      // Axios 사용하여 '/signUp' 엔드 포인트로 POST 요청을 보냄
-      // 전송할 데이터는 username(차량번호이자 아이디), password, email(아이디 / 비밀번호 찾기 목적)
       const response = await axios.post(
         //env에 환경변수를 사용할때는 REACT_APP_ 접두사를 사용해야함
-        `http://${process.env.REACT_APP_BACK_END_SERVER}/searchPW`,
+        `http://${process.env.REACT_APP_BACK_END_SERVER}/temPW`,
         requestData
       );
       // 서버로부터의 응답 알림창으로 표시
-      alert(response.data);
+      alert(
+        `발급된 임시 비밀번호는 ${response.data} 입니다. 번호를 복사하여 사용하시길 바랍니다. `
+      );
     } catch (error) {
       //에러 발생 시 콘솔에 표시 및 알림창 표시
       console.error("비밀번호 찾기 실패", error);
@@ -93,7 +93,7 @@ export default function SearchPw() {
                 isPcOrMobile ? "text-xl mb-10" : "text-2xl mb-10"
               }`}
             >
-              비밀번호 찾기
+              임시 비밀번호 발급
             </h2>
           </div>
           <form
@@ -102,7 +102,7 @@ export default function SearchPw() {
           >
             <div className={`flex-grow flex flex-row m-2`}>
               <label
-                className={`text-white mx-5 mt-2 ${
+                className={`text-white ml-4 mr-5 mt-2 ${
                   isPcOrMobile ? "" : "text-lg"
                 }`}
               >
@@ -168,7 +168,7 @@ export default function SearchPw() {
             <div className={`flex-grow flex flex-row m-2`}>
               <label
                 className={`text-white mt-2 ${
-                  isPcOrMobile ? "ml-8 mr-7" : "ml-7 mr-8 text-lg"
+                  isPcOrMobile ? "ml-6 mr-7" : "ml-7 mr-8 text-lg"
                 }`}
               >
                 이메일
@@ -215,9 +215,16 @@ export default function SearchPw() {
             <div className={`mx-7 mt-0 mb-5`}>
               <button
                 type="submit"
-                className={`bg-slate-300 text-sky-950 hover:bg-sky-300 px-10 py-2 rounded-2xl text-lg font-semibold mt-10 mb-5`}
+                className={`bg-yellow-200 text-sky-950 hover:bg-sky-300 px-10 py-2 rounded-2xl text-lg font-semibold 
+                  ${isPcOrMobile ? "mt-10 ml-3 ": "mt-10 mb-5 ml-7 mr-2"}`}
               >
-                입력
+                발급
+              </button>
+              <button
+                className={`bg-slate-300 text-sky-950 hover:bg-sky-300 px-7 py-2 rounded-2xl text-lg font-semibold 
+                  ${isPcOrMobile ? "mt-10 ml-3" : "mt-10 mb-5 mx-2"}`}
+              >
+                <Link to="/ChangePw">비밀번호 변경</Link>
               </button>
             </div>
           </form>

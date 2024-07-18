@@ -54,7 +54,7 @@ export default function Login() {
         console.log("context로 전달될 username", usernameValue);
         console.log("context로 전달될 role", role);
         // 로그인이 진행된 후 context에 username, role 저장
-        alert("로그인 성공");
+        alert("로그인에 성공하였습니다.");
         navigate("/");
       } else {
         // 토큰이 응답에 포함되지 않은 경우
@@ -69,7 +69,7 @@ export default function Login() {
         "로그인 실패",
         error.response ? error.response.data : error.message
       );
-      alert("로그인 실패");
+      alert("로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요");
     }
   };
 

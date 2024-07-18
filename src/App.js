@@ -23,6 +23,7 @@ import ServiceDataGet from "./service/ServiceDataGet";
 import QnAView from "./quesPage/QnAView";
 import AnsForm from "./quesComp/AnsForm";
 import SearchPw from "./member/SearchPw";
+import ChangePw from "./member/ChangePw";
 
 function App() {
   // 반응형 구현
@@ -59,6 +60,7 @@ function App() {
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/Login" element={<Login />} />
             <Route path="/SearchPw" element={<SearchPw />} />
+            <Route path="/ChangePw" element={<ChangePw />} />
             <Route path="/QnAPage" element={<QnAPage />} />
             <Route path="/QnAView" element={<QnAView />} />
             <Route path="/qna/questions/:id" element={<QnAView />} />

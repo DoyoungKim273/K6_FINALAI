@@ -25,7 +25,8 @@ export default function AdBox({oilbank}) {
   return (
     // 아예 박스 자체를 링크로 설정
     // 기본적인 광고판 배너 컴포넌트
-    <Link to={linkPath} className='cursor-pointer'> 
+    <a href={linkPath} className='cursor-pointer'
+    target='_blank' rel="noopwnwe noreferrer"> 
       <div className='flex flex-row'>
         <img src={oImg} alt={altle} className={isPcOrMobile ? "w-7 h-5 my-1" : "w-14 h-10" }/>
         <div className={`font-bold text-center ${isPcOrMobile ? "mx-2" : "mt-1 mx-3 text-lg"}`}>
@@ -42,6 +43,6 @@ export default function AdBox({oilbank}) {
           </div>
         </div>
       </div>
-    </Link>
+    </a>
   )
 }

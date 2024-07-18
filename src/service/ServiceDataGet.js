@@ -32,7 +32,7 @@ const ServiceDataGet = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const isPcOrMobile = useMediaQuery({ query: "(max-width: 400px)" });
   const [isBlink, setIsBlink] = useState(false);
-  // 반짝거림 상태 관리
+  const [resetOnce, setResetOnce] = useState(false);
 
   // 트럭 유형 선택지 배열
   const truckTypes = [
@@ -78,6 +78,14 @@ const ServiceDataGet = () => {
       month: date.getMonth() + 1, // 월 설정 (0부터 시작하므로 +1)
       day: date.getDate(), // 일 설정
     }));
+    if (isSubmitted && !resetOnce) {
+      handleReset();
+      setResetOnce(true);
+      // submit 후 날짜 변경될 때 reset 호출
+    } else {
+      setResetOnce(false);
+      // 첫번째 클릭 이후에는 resetOnce를 false로 설정
+    }
   };
 
   // 시간별 예측 데이터를 가져오는 함수
@@ -145,10 +153,12 @@ const ServiceDataGet = () => {
 
   // 부두의 개수를 가져온 후 예측 데이터를 가져옴
   useEffect(() => {
-    if (docksCount > 0) {
+    if (docksCount > 0 && isSubmitted) {
       fetchHourlyPredictions();
     }
-  }, [docksCount]);
+  }, [docksCount, isSubmitted]);
+  // 여기서 useEffect 만으로 fetch를 한게 모든 문제의 원인
+  // 조건문을 보다 엄격하게 적용해야만 했다!!
 
   // 0시부터 12시까지의 데이터와 13시부터 24시까지의 데이터를 분리
   const morningData = hourlyPredictedTimes.filter((data) => data.hour <= 12);
@@ -162,13 +172,14 @@ const ServiceDataGet = () => {
     } else {
       fetchHourlyPredictions();
       setIsSubmitted(true);
+      setResetOnce(false);
       setIsBlink(true);
     }
   };
 
   // 새로고침 누르면 입력 항목 리셋
-  const handleReset = (e) => {
-    e.preventDefault();
+  const handleReset = () => {
+    // e.preventDefault();
     setFormData({
       year: 2024,
       month: "",
@@ -181,7 +192,13 @@ const ServiceDataGet = () => {
     // 리셋하면 반짝거림 초기화
     setIsBlink(false);
     setHourlyPredictedTimes([]);
+    // setResetOnce(true);
   };
+
+  // 모든 요소의 값이 null이 아닌지 검증
+  const hasValidValues = hourlyPredictedTimes.every(
+    (data) => data.predicted_time !== null
+  );
 
   // 값에 따른그래프 봉 컬러 변경
   const graphColor = (value) => {
@@ -240,9 +257,7 @@ const ServiceDataGet = () => {
             <div className="relative m-2">
               <DatePicker
                 selected={selectedDate}
-                // 선택된 날짜 설정
                 onChange={handleDateChange}
-                // 날짜 변경 핸들러 설정
                 dateFormat="MM/dd"
                 showMonthDropdown
                 showDayDropdown
@@ -250,6 +265,10 @@ const ServiceDataGet = () => {
                 className={`rounded-md p-2 hover:bg-sky-200 text-slate-400 ${
                   isPcOrMobile ? "w-32 h-10" : "w-16 h-10"
                 }`}
+                popperProps={{
+                  placement: "bottom-end",
+                  // 팝업 위치 설정
+                }}
               />
             </div>
             <input
@@ -299,66 +318,76 @@ const ServiceDataGet = () => {
         </form>
         <div
           className={`flex mb-10 ${
-            isPcOrMobile ? "mr-10 flex-col" : "mr-16 flex-col"
+            isPcOrMobile ? "flex-col" : "mr-16 flex-col"
           }`}
         >
-          <div
-            className={`flex flex-col items-center justify-center text-center bg-sky-800 text-slate-50 rounded-lg
-              ${
-                isPcOrMobile
-                  ? "ml-20 mr-10 text-sm p-3"
-                  : "ml-14 mb-1 py-2 px-3"
-              }`}
-          >
-            {/* 예측된 시간 배열의 길이가 0보다 긴가 ? ( 모바일인가 ? (예상입출문~1) : (예상입출문2)) : (모바일인가 ? (예측한다~1) : (예측한다~2) */}
-            {hourlyPredictedTimes.length > 0 ? (
-              isPcOrMobile ? (
-                <p>
-                  " {formData.hour} " 시의 예상 입출문 소요시간은 <br />
-                  약  " {minsToHours(getPredictedTimeHour(formData.hour))} " 입니다.
-                </p>
-              ) : (
-                <p>
-                  " {formData.hour} " 시의 예상 입출문 소요시간은 
-                  약  " {minsToHours(getPredictedTimeHour(formData.hour))} " 입니다.
-                </p>
-              )
-            ) : isPcOrMobile ? (
-              <p>
-                0시부터 24시 중 원하는 시간을 입력하면, <br />
-                입출문 소요시간을 예측합니다.
-              </p>
+          {/* 예측된 시간 배열의 길이가 25보다 긴가 ? ( 모바일인가 ? (예상입출문~1) : (예상입출문2)) : (모바일인가 ? (예측한다~1) : (예측한다~2) */}
+          {hourlyPredictedTimes.length >= 25 && hasValidValues ? (
+            isPcOrMobile ? (
+              <div
+                className={`flex flex-col items-center justify-center text-center bg-sky-800 text-slate-50 rounded-lg
+              w-72 text-sm px-0 py-3 ml-20`}
+              >
+                " {formData.hour} " 시의 예상 입출문 소요시간은 <br /> 약 "
+                {minsToHours(getPredictedTimeHour(formData.hour))} " 입니다.
+              </div>
             ) : (
-              <p>
-                0시부터 24시 중 원하는 시간을 입력하면, 해당 시의 입출문
-                소요시간을 예측합니다.
-              </p>
-            )}
-          </div>
+              <div
+                className={`flex flex-col items-center justify-center text-center bg-sky-800 text-slate-50 rounded-lg
+             ml-14 mb-1 py-2 px-3`}
+              >
+                " {formData.hour} " 시의 예상 입출문 소요시간은 약 "
+                {minsToHours(getPredictedTimeHour(formData.hour))} " 입니다.
+              </div>
+            )
+          ) : isPcOrMobile ? (
+            <div
+              className={`flex flex-col items-center justify-center text-center bg-sky-800 text-slate-50 rounded-lg
+              w-72 text-sm px-0 py-3`}
+            >
+              0시부터 24시 중 원하는 시간을 입력하면, <br />
+              예상 입출문 소요시간을 예측합니다.
+            </div>
+          ) : (
+            <div
+              className={`flex flex-col items-center justify-center text-center bg-sky-800 text-slate-50 rounded-lg
+             ml-14 mb-1 py-2 px-3`}
+            >
+              0시부터 24시 중 원하는 시간을 입력하면, 해당 시의 입출문
+              소요시간을 예측합니다.
+            </div>
+          )}
           <div
             className={`flex justify-center items-center ${
               isPcOrMobile ? "flex-col" : "flex-row"
             }`}
           >
             {/* 연산자 주의 !== */}
-            {hourlyPredictedTimes.length !== 25 && (
-              <div className={`flex flex-col justify-center items-center`}>
-                <img
-                  src={logo}
-                  alt="logo"
-                  className={`
+            {/* 유효한 값이 넘어오지 않거나 배열의 길이가 충족되지 않는 경우 이미지 깜빡깜빡 */}
+            {!hasValidValues ||
+              (hourlyPredictedTimes <= 25 && (
+                <div className={`flex flex-col justify-center items-center`}>
+                  <img
+                    src={logo}
+                    alt="logo"
+                    className={`
                     ${isBlink ? "blinking" : ""}
                     ${
                       isPcOrMobile
-                        ? "ml-10 mt-5 w-52 h-52"
+                        ? "ml-0 mt-5 w-52 h-52"
                         : "mb-20 ml-14 mt-20 w-64 h-64"
                     } `}
-                ></img>
-              </div>
-            )}
+                  ></img>
+                </div>
+              ))}
+
             {/* 0시부터 12시까지의 데이터를 위한 BarChart */}
-            {hourlyPredictedTimes.length === 25 && (
-              <div className={`flex flex-col justify-center items-center`}>
+            {hasValidValues && hourlyPredictedTimes.length >= 24 && (
+              <div
+                className={`flex flex-col justify-center items-center ${
+                  isPcOrMobile ? "mr-10" : ""
+                }`}
+              >
                 <div
                   className={` text-gray-600
                     ${isPcOrMobile ? "mt-5 ml-10 " : "mt-3 ml-16"}`}
@@ -418,9 +447,14 @@ const ServiceDataGet = () => {
               </div>
             )}
 
-            {hourlyPredictedTimes.length === 25 && (
+            {/* 모두 유효한 값이면서 배열의 길이도 충족되었을 때 그래프 띄우기 */}
+            {hasValidValues && hourlyPredictedTimes.length >= 24 && (
               // 13시부터 24시까지의 데이터를 위한 BarChart
-              <div className={`flex flex-col justify-center items-center`}>
+              <div
+                className={`flex flex-col justify-center items-center ${
+                  isPcOrMobile ? "mr-10" : ""
+                }`}
+              >
                 <div
                   className={` text-gray-600 ${
                     isPcOrMobile ? "ml-10" : "mt-3 ml-16"
