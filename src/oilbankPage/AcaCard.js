@@ -52,14 +52,14 @@ ${isPcOrMobile ? "flex-row" : "flex-row"}
           src={washOk}
           alt={washOk}
           className={
-            isPcOrMobile ? "w-36 h-12 mx-5 mb-2" : "w-52 h-16 mt-6 mb-3 mr-10"
+            isPcOrMobile ? "w-36 h-12 mx-5 mb-2" : "w-48 h-16 mt-6 mb-3 mr-10"
           }
         ></img>
         <img
           src={fixCar}
           alt={fixCar}
           className={
-            isPcOrMobile ? "w-36 h-12 mx-5" : "w-52 h-16 mt-3 mb-6 mr-10"
+            isPcOrMobile ? "w-36 h-12 mx-5" : "w-48 h-16 mt-3 mb-6 mr-10"
           }
         ></img>
       </div>

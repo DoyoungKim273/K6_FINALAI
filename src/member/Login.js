@@ -137,7 +137,7 @@ export default function Login() {
                   required
                 >
                   <option value="" disabled selected>
-                    한
+                    가
                   </option>
                   {carMiddleChars.map((char) => (
                     <option key={char} value={char}>

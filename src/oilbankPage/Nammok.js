@@ -39,6 +39,16 @@ export default function Nammok() {
 
           const map = new window.kakao.maps.Map(mapContainer.current, mapOption);
 
+          const mapTypeControl = new window.kakao.maps.MapTypeControl();
+
+          // 지도에 컨트롤을 추가해야 지도위에 표시됨
+          // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+          map.addControl(mapTypeControl, window.kakao.maps.ControlPosition.TOPRIGHT);
+
+          // 지도 확대 축소를 제어할 수 있는 줌 컨트롤을 생성
+          var zoomControl = new window.kakao.maps.ZoomControl();
+          map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
+          
           // 이미지 마커 설정
           const imageSrc = oilbankMarker;
           const imageSize = new window.kakao.maps.Size(64, 69);

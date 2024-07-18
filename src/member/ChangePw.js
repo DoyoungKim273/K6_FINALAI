@@ -113,7 +113,7 @@ export default function ChangePw() {
                   required
                 >
                   <option value="" disabled selected>
-                    한
+                    가
                   </option>
                   {carMiddleChars.map((char) => (
                     <option key={char} value={char}>
