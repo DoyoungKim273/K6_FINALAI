@@ -224,8 +224,8 @@ const ServiceDataGet = () => {
           isPcOrMobile ? "" : ""
         }`}
       >
-        <h1 className={`text-center text-2xl font-bold mx-7 my-9 text-sky-950`}>
-          화물차 소요시간 예측
+        <h1 className={`text-center  font-bold mx-7 my-9 text-sky-950 ${isPcOrMobile ? "text-xl" : "text-2xl"}`}>
+          화물차 입출문 소요시간 예측
         </h1>
         <div
           className={`text-sky-900 mb-2 font-semibold text-center ${
