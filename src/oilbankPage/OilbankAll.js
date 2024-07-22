@@ -4,6 +4,7 @@ import MainHeader from "../main/MainHeader";
 import MainFooter from "../main/MainFooter";
 import AdList2 from "../main/AdList2";
 import oilbankMarker from "../img/oilbankMarker.png";
+import userMarker from "../img/userMarker.png";
 
 export default function Aca() {
   const mapContainer = useRef(null);
@@ -49,6 +50,80 @@ export default function Aca() {
 
           const zoomControl = new window.kakao.maps.ZoomControl();
           map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
+
+          // 현재 위치 표시 기능 추가
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+              const lat = position.coords.latitude; // 현재 위도
+              const lon = position.coords.longitude; // 현재 경도
+
+              const locPosition = new window.kakao.maps.LatLng(lat, lon); // 현재 위치
+
+              // 이미지 마커 생성
+              const imageSize2 = new window.kakao.maps.Size(49, 49);
+
+              const markerImage2 = new window.kakao.maps.MarkerImage(
+                userMarker,
+                imageSize2
+              );
+
+              // 마커를 생성하여 현재 위치에 표시
+              const marker = new window.kakao.maps.Marker({
+                map: map,
+                position: locPosition,
+                image: markerImage2,
+              });
+
+              map.setCenter(locPosition);
+              // 마커 주변 콘텐츠 박스 설정
+              const content =
+                '<div class="customoverlay p-2 opacity-90 font-bold text-white bg-blue-600 rounded-3xl ml-2 mb-14">' +
+                '    <span class="title">사용자 현재 위치</span>' +
+                "</div>";
+
+              // 커스텀 오버레이가 표시될 위치 설정
+              const customOverlayPosition = new window.kakao.maps.LatLng(
+                lat, lon
+              );
+
+              // 커스텀 오버레이 생성 및 설정
+              const customOverlay = new window.kakao.maps.CustomOverlay({
+                position: customOverlayPosition,
+                content: content,
+                yAnchor: 1,
+              });
+
+              // 오버레이를 지도에 설정
+              customOverlay.setMap(map);
+            });
+          } else {
+            // Geolocation을 사용할 수 없을 때 기본 위치 설정
+            const locPosition = new window.kakao.maps.LatLng(
+              33.450701,
+              126.570667
+            );
+            const message = "geolocation을 사용할 수 없어요..";
+
+            displayMarker(locPosition, message);
+          }
+
+          // 기본 위치에 마커와 인포윈도우를 표시하는 함수
+          function displayMarker(locPosition, message) {
+            const marker = new window.kakao.maps.Marker({
+              map: map,
+              position: locPosition,
+            });
+
+            const iwContent = message;
+            const iwRemoveable = true;
+
+            const infowindow = new window.kakao.maps.InfoWindow({
+              content: iwContent,
+              removable: iwRemoveable,
+            });
+            infowindow.open(map, marker);
+            map.setCenter(locPosition);
+          }
 
           // 마커를 표시할 위치와 title 객체 배열
           const positions = [
@@ -118,11 +193,6 @@ export default function Aca() {
               title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
               image: markerImage, // 마커 이미지
             });
-
-            // 마커에 커스텀 오버레이를 추가합니다
-            // const content = `<div class="customoverlay p-2 opacity-90 font-bold bg-red-300 rounded-3xl ml-2 mb-20">
-            //                   <span class="title">${positions[i].title}</span>
-            //                 </div>`;
 
             const customOverlay = new window.kakao.maps.CustomOverlay({
               position: positions[i].latlng,

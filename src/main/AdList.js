@@ -16,23 +16,33 @@ export default function AdList() {
 
   // 마우스 올라갈 시 애니메이션 중지
   const handleMouseEnter = () => {
+    console.log("마우스 올라갈 시 애니메이션 중지");
     setIsPaused(true);
   };
 
   // 마우스 벗어나면 애니메이션 진행
   const handleMouseLeave = () => {
+    console.log("마우스 벗어나면 애니메이션 진행");
     setIsPaused(false);
   };
 
   // 애니메이션 속도 증가
   const increaseSpeed = () => {
-    setAnimationSpeed((prevSpeed) => Math.max(prevSpeed - 20, 20));
+    setAnimationSpeed((prevSpeed) => {
+      const newSpeed = Math.max(prevSpeed - 20, 20);
+      console.log("애니메이션 속도 증가", newSpeed);
+      return newSpeed;
+    });
     // 최소 속도 제한
   };
 
   // 애니메이션 속도 감소
   const decreaseSpeed = () => {
-    setAnimationSpeed((prevSpeed) => prevSpeed + 15);
+    setAnimationSpeed((prevSpeed) => {
+      const newSpeed = prevSpeed + 15;
+      console.log("애니메이션 속도 감소", newSpeed);
+      return newSpeed;
+    });
   };
 
   return (
@@ -43,7 +53,7 @@ export default function AdList() {
         </button>
         <button
           onClick={decreaseSpeed}
-          className=" text-sm mx-1 px-5 py-1 text-white  bg-slate-700 opacity-85 rounded-full"
+          className="text-sm mx-1 px-5 py-1 text-white bg-slate-700 opacity-85 rounded-full"
         >
           ▶
         </button>
@@ -65,8 +75,11 @@ export default function AdList() {
         <div
           className={`flex flex-row mb-10 absolute`}
           style={{
-            animation: `slider ${animationSpeed}s linear infinite`,
-            animationPlayState: isPaused ? "paused" : "running",
+            animationName: 'slider',
+            animationDuration: `${animationSpeed}s`,
+            animationTimingFunction: 'linear',
+            animationIterationCount: 'infinite',
+            animationPlayState: isPaused ? 'paused' : 'running',
           }}
         >
           {/* 무한 반복 착시 위해 3번 동일 컴포넌트 반복 */}

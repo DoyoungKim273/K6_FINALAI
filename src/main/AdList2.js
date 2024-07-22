@@ -16,7 +16,8 @@ export default function AdList() {
 
   return (
     <div >
-    <div className="flex flex-row h-full justify-between">
+    {/* 모바일 환경에서 x축 스크롤 추가 */}
+    <div className={`flex flex-row h-full justify-between ${isPcOrMobile ? "overflow-x-scroll" : ""}`}>
           {cards.map((oilbank, index) => (
             <div
               key={index}
